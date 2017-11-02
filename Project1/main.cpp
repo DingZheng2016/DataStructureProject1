@@ -18,6 +18,8 @@ int main()
 	CSVReader csvReader("url.csv");
 	char* url;
 	
+	freopen("result.csv", "w", stdout);
+
 	printf("\"序号\",\"网址\",\"发帖大类\",\"发帖小类\",\"发帖标题\",\"发帖内容\",\"发帖人\",\"发帖日期\",\"发帖类型\",\"分词结果\"\n");
 
 	for (int i = 1; i <= 100; ++i) {
@@ -38,8 +40,8 @@ int main()
 		for (int i = mid; i < strlen(url); ++i)
 			request[i - mid] = url[i];
 		request[strlen(url) - mid] = '\0';
-		//GetHTML::getIns()->generate(domain, request);
-		GetHTML::getIns()->generate("bbs.cehome.com", "thread-615254-1-1.html");
+		GetHTML::getIns()->generate(domain, request);
+		//GetHTML::getIns()->generate("bbs.cehome.com", "thread-615254-1-1.html");
 		delete domain;
 		delete request;
 		//------Get And Save HTML------
@@ -156,6 +158,6 @@ int main()
 		printf("\n");
 		//break;
 	}
-	system("pause");
+	//system("pause");
 	return 0;
 }

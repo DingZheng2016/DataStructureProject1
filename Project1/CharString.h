@@ -3,7 +3,7 @@
 
 #include <string>
 
-#define CHARSTRING_SIZE_INIT 1000
+#define CHARSTRING_SIZE_INIT 50
 #define CHARSTRING_SIZE_INCREMENT 500
 
 class CharString {

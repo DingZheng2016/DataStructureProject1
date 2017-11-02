@@ -33,8 +33,7 @@ Stack<T>::Stack()
 template <class T>
 Stack<T>::~Stack()
 {
-	while (!empty())
-		pop();
+	delete[] data;
 }
 
 template <class T>

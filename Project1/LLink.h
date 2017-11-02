@@ -8,7 +8,15 @@ class LNode
 public:
 	T elem;
 	LNode<T> *next, *pre;
+	~LNode();
 };
+
+template<class T>
+LNode<T>::~LNode()
+{
+	if(next)
+		delete next;
+}
 
 template<class T>
 class LList
@@ -37,7 +45,7 @@ LList<T>::LList()
 template<class T>
 LList<T>::~LList()
 {
-
+	delete head;
 }
 
 template<class T>
