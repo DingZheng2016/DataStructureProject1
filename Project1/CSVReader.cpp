@@ -4,6 +4,10 @@
 
 CSVReader::CSVReader(std::string filename) {
 	fp = fopen(filename.c_str(), "r");
+	if (!fp) {
+		printf("%s not found!", filename);
+		return;
+	}
 	char st[1000];
 	fgets(st, 1024, fp);
 }

@@ -86,4 +86,5 @@ int LList<T>::search(T m)
 	return -1;
 }
 
+
 #endif

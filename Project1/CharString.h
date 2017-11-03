@@ -3,7 +3,7 @@
 
 #include <string>
 
-#define CHARSTRING_SIZE_INIT 50
+#define CHARSTRING_SIZE_INIT 20
 #define CHARSTRING_SIZE_INCREMENT 500
 
 class CharString {
@@ -25,11 +25,12 @@ public:
 	void assign(std::wstring);
 	CharString& operator = (CharString&);
 	bool equal(CharString&);
+	CharString& substring(int, int);
 	int toInt();
 
 	//Test
 	void output(bool space = true);
-	CharString& substring(int, int);
+	
 };
 
 #endif

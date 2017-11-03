@@ -22,7 +22,7 @@ void GetHTML::generate(char* url1, char* url2) {
 	char szBuffer[1024] = { 0 };
 	DWORD dwByteRead = 0;
 	FILE* fp = NULL;
-	fopen_s(&fp, "a.html", "w");
+	fopen_s(&fp, "temp/temp.html", "w");
 	while (InternetReadFile(hOpenRequest, szBuffer, sizeof(szBuffer), &dwByteRead) && dwByteRead > 0)
 	{
 		fwrite(szBuffer, dwByteRead, 1, fp);
