@@ -10,7 +10,6 @@ TreeNode::TreeNode(CharString tagname)
 
 TreeNode::~TreeNode()
 {
-	//printf("del");
 	delete content;
 	delete tag;
 	delete attrlist;

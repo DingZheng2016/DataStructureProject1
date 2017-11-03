@@ -14,12 +14,9 @@ public:
 	~HtmlParsor();
 
 	//Interface
-	TreeNode* findNodeWithClass(CharString&); //Return a node with the class name
-	TreeNode* findNodeWithTag(CharString&); //Return a node with the tag name
+	TreeNode* findNodeWithClass(CharString&); //在整个html中寻找包含特定class的一个节点
+	TreeNode* findNodeWithTag(CharString&); //在整个html中寻找包含特定tag的一个节点
 	void extractInfo(CharString&);
-
-	//test
-	void output();
 };
 
 #endif

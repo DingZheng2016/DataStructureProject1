@@ -1,7 +1,7 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
-#define HASHMAXNUM 1000000
+#define HASHMAXNUM 1000007
 #include "CharString.h"
 #include "LLink.h"
 

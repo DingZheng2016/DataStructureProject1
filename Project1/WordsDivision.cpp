@@ -9,21 +9,9 @@ WordsDivision::WordsDivision()
 
 WordsDivision::WordsDivision(std::string& dictname)
 {
-	std::wifstream in(dictname);
-	int dict_len = 0;
-	wchar_t dwch;
 
-	printf("**********Start Reading Dict File**********\n");
-	wchar_t dwcht[100];
-	while (in.getline(dwcht, 256)) {
-		s.add(CharString(dwcht));
-	}
-	in.close();
-	printf("**********End Reading Dict File**********\n\n");
-
-	printf("**********Start Building Hash Table**********\n");
-	hashtable = new HashTable(s);
-	printf("**********End Building Hash Table**********\n\n");
+	hashtable = NULL;
+	initDictionary(dictname);
 }
 
 void WordsDivision::initDictionary(std::string& dictname)
@@ -51,7 +39,7 @@ void WordsDivision::initDictionary(std::string& dictname)
 
 LList<CharString> WordsDivision::divideWords(CharString& s)
 {
-	int max_len = 10;
+	int max_len = 15;
 	int tk = 0;
 	int current;
 	LList<CharString> lsegre;
@@ -73,8 +61,6 @@ LList<CharString> WordsDivision::divideWords(CharString& s)
 					lsegre.add(mstr);
 				break;
 			}
-			else
-				;//printf("no");
 			--current;
 		}
 		tk += current;

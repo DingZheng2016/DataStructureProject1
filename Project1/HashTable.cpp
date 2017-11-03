@@ -21,16 +21,12 @@ HashTable::~HashTable()
 
 int HashTable::hash(CharString& str)
 {
-	int hash_num = 0;
-	int pnum = 12983;
-	//for (int i = 0; i < str.len; ++i)
-	//	printf("%d ", str.s[i]);
-
-	for (int i = 0; i < str.len; ++i)
-		hash_num = (hash_num + str.s[i] * pnum) % HASHMAXNUM;
-
-	//printf("%d\n", hash_num);
-	return hash_num;
+	long long hash_num = 0;
+	long long pnum = 10007;
+	int ph[] = {281279 ,281291 ,281297 ,281317 ,281321 ,281327 ,281339 ,281353 ,281357 ,281363 ,281381 ,281419, 281423 ,281429 ,281431 };
+	for (long long i = 0; i < str.len; ++i)
+		hash_num = (hash_num + str.s[i] * pnum * ph[i % 15]) % HASHMAXNUM;
+	return (int)hash_num;
 }
 
 bool HashTable::exist(CharString& str)

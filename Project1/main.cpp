@@ -24,8 +24,8 @@ int main()
 	wresultfile << "\"序号\",\"网址\",\"发帖大类\",\"发帖小类\",\"发帖标题\",\"发帖内容\",\"发帖人\",\"发帖日期\",\"发帖类型\",\"分词结果\"\n";
 
 
-	WordsDivision wordsdivision;
-	wordsdivision.initDictionary(string("config/dict"));
+	WordsDivision wordsdivision; 
+	wordsdivision.initDictionary(string("config/dict"));//读入字典文件并构建哈希表
 	
 
 	for (int i = 1; i <= 100; ++i) {
@@ -47,20 +47,21 @@ int main()
 			request[i - mid] = url[i];
 		request[strlen(url) - mid] = '\0';
 		GetHTML::getIns()->generate(domain, request);
-		//GetHTML::getIns()->generate("bbs.cehome.com", "thread-615254-1-1.html");
 		delete domain;
 		delete request;
 		//------Get And Save HTML------
 
-		wofstream tempfile("temp/temp.txt");
+		wofstream tempfile("temp/temp.txt"); //存储进行分词的文本
 
 		wchar_t wch;
 		CharString html;
-		wifstream infs16("temp/temp.html");
-		//int len = 0;
+		wifstream infs16("temp/temp.html"); 
 		while (infs16.read(&wch, 1))html.concat(wch);
+
 		HtmlParsor dom;
-		dom.extractInfo(html);
+		dom.extractInfo(html);//将html文本文件解析为树形结构
+
+		//++++++发帖大类、发帖小类、发帖标题++++++
 		TreeNode* p = dom.findNodeWithClass(CharString(L"z"));
 		if (p != NULL) {
 			TreeNode *p1 = p->findChildWithTag(CharString(L"a"), 2);
@@ -97,14 +98,15 @@ int main()
 		else {
 			wresultfile << "NA,NA,NA,";
 		}
+		//++++++发帖大类、发帖小类、发帖标题++++++
 			
-		//++++++thread content++++++
+		//++++++发帖内容++++++
 		p = dom.findNodeWithClass(CharString(L"t_fsz"));
 		if (p) {
 			TreeNode *q = p->findChildWithTag(CharString(L"table"))->findChildWithTag(CharString(L"tr"))->findChildWithTag(CharString(L"td"));
 			TreeNode *t = q->findChildWithTag(CharString(L"p"));
 			wresultfile << "\"";
-			if (t) {
+			if (t) { //大部分html文件td下含有p标签，且content需要进行HtmlDecode
 				int j = 0;
 				CharString *content = t->content;
 				wresultfile.imbue(locale("chs"));
@@ -122,7 +124,7 @@ int main()
 				}
 				wresultfile.imbue(locale::classic());
 			}
-			else {
+			else { //少部分html文件td标签直接包含帖子内容且无需进行HtmlDecode
 				for (int j = 0; j < q->content->len; ++j)
 					if(q->content->s[j] != ' ' && q->content->s[j] != '\n')
 						wresultfile << q->content->s[j];
@@ -132,9 +134,9 @@ int main()
 		else {
 			wresultfile << "NA,";
 		}
-		//------thread content------
+		//------发帖内容------
 
-		//author
+		//++++++发帖人++++++
 		p = dom.findNodeWithClass(CharString(L"xw1"));
 		if (!p)
 			wresultfile << "NA,";
@@ -145,9 +147,9 @@ int main()
 				wresultfile << p->content->s[j];
 			wresultfile << "\",";
 		}
-		//------
+		//------发帖人------
 
-		//date
+		//++++++发帖日期++++++
 		p = dom.findNodeWithClass(CharString(L"pti"));
 		if (p) {
 			TreeNode *p1 = p->findChildWithTag(CharString(L"div"), 1)->findChildWithTag(CharString(L"em"));
@@ -159,9 +161,9 @@ int main()
 		}
 		else
 			wresultfile << "NA,";
-		//p->content->output();
+		//------发帖日期------
 
-		//type
+		//++++++发帖类型++++++
 		p = dom.findNodeWithClass(CharString(L"ts z h1"));
 		if (p) {
 			TreeNode* p1 = p->findChildWithTag(CharString(L"a"));
@@ -173,18 +175,18 @@ int main()
 		}
 		else
 			wresultfile << "NA,";
-		
+		//------发帖类型------
 
 		tempfile.close();
 
+		//++++++分词结果++++++
 		wifstream intemp("temp/temp.txt");
 		CharString tempstr;
 		wchar_t dwch;
 		while (intemp.read(&dwch, 1))
 			tempstr.concat(dwch);
 
-		
-		LList<CharString> lsegre = wordsdivision.divideWords(tempstr);
+		LList<CharString> lsegre = wordsdivision.divideWords(tempstr); //返回分词结果链表
 		
 		LNode<CharString> *pN = lsegre.head->next;
 		if (pN == NULL)
@@ -199,10 +201,11 @@ int main()
 			}
 			wresultfile << "\"";
 		}
+		//------分词结果------
+
 		wresultfile << "\n";
 		printf("->result.csv\n");
 	}
 	wresultfile.close();
-	//system("pause");
 	return 0;
 }

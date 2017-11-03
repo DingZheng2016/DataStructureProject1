@@ -124,5 +124,4 @@ void CharString::output(bool space)
 			if (s[i] != ' ' && s[i] != '\n')
 				printf("%Lc", s[i]);
 	}
-	
 }

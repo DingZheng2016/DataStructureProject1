@@ -13,7 +13,7 @@ private:
 public:
 	WordsDivision();
 	WordsDivision(std::string&);
-	LList<CharString> divideWords(CharString&);
+	LList<CharString> divideWords(CharString&); //最大正向匹配法进行分词
 	void initDictionary(std::string& dictname);
 };
 

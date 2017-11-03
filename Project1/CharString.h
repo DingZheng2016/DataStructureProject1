@@ -25,11 +25,11 @@ public:
 	void assign(std::wstring);
 	CharString& operator = (CharString&);
 	bool equal(CharString&);
-	CharString& substring(int, int);
-	int toInt();
+	CharString& substring(int, int); //左闭右开
+	int toInt(); //转成数字，处理形如 &#*****; 
 
-	//Test
-	void output(bool space = true);
+
+	void output(bool space = true); //为false是自动忽略空格回车，主要用于帖子内容的输出
 	
 };
 

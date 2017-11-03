@@ -12,7 +12,7 @@ GetHTML* GetHTML::getIns(){
 	return mInstance;
 }
 
-void GetHTML::generate(char* url1, char* url2) {
+void GetHTML::generate(char* url1, char* url2) { //此处发送HTTP请求的代码借鉴博客 blog.csdn.net/wzx19840423/article/details/6536342
 	HINTERNET hInternet = InternetOpenA("", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0); //初始化WinINet
 	HINTERNET hConnect = InternetConnectA(hInternet, url1, INTERNET_DEFAULT_HTTP_PORT,
 		NULL, NULL, INTERNET_SERVICE_HTTP, 0, 0); //连接服务器
