@@ -5,10 +5,13 @@ HashTable::HashTable()
 
 }
 
-HashTable::HashTable(CharString* p, int n)
+HashTable::HashTable(LList<CharString> &s)
 {
-	for (int i = 0; i < n; ++i)
-		link[hash(p[i])].add(p[i]);
+	LNode<CharString> *p = s.head->next;
+	while (p != NULL) {
+		link[hash(p->elem)].add(p->elem);
+		p = p->next;
+	}
 }
 
 HashTable::~HashTable()

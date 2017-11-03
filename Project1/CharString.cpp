@@ -7,12 +7,10 @@ CharString::CharString()
 	size = CHARSTRING_SIZE_INIT;
 	s = (wchar_t*)malloc(sizeof(wchar_t) * size);
 	len = 0;
-	//std::wcout.imbue(std::locale::locale("chs"));
 }
 
 CharString::CharString(CharString& m)
 {
-	//printf("in CharString(CharString&)\n");
 	size = m.size;
 	len = 0;
 	s = (wchar_t*)malloc(sizeof(wchar_t) * size);
@@ -115,7 +113,6 @@ int CharString::toInt()
 	return num;
 }
 
-//Test
 void CharString::output(bool space)
 {
 	if (space) {

@@ -10,7 +10,7 @@ private:
 	LList<CharString> link[HASHMAXNUM];
 public:
 	HashTable();
-	HashTable(CharString*, int);
+	HashTable(LList<CharString> &);
 	~HashTable();
 	bool exist(CharString&);
 	

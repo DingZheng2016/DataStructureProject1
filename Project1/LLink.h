@@ -14,8 +14,6 @@ public:
 template<class T>
 LNode<T>::~LNode()
 {
-	if(next)
-		delete next;
 }
 
 template<class T>

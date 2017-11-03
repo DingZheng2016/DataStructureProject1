@@ -8,12 +8,11 @@
 #include "CSVReader.h"
 #include "HtmlParsor.h"
 #include "HashTable.h"
+#include "WordsDivision.h"
 
 #define FILE_SIZE 1024 * 1024
 
 using namespace std;
-
-CharString s[300000];
 
 int main()
 {
@@ -24,35 +23,10 @@ int main()
 
 	wresultfile << "\"序号\",\"网址\",\"发帖大类\",\"发帖小类\",\"发帖标题\",\"发帖内容\",\"发帖人\",\"发帖日期\",\"发帖类型\",\"分词结果\"\n";
 
-	
-	wifstream in("config/dict");
-	int dict_len = 0;
-	wchar_t dwch;
 
-	printf("**********Start Reading Dict File**********\n");
-	/*
-	while (in.read(&dwch, 1)) {
-		if (dwch != '\n') {
-			s[dict_len].concat(dwch);
-		}
-		else {
-			//s[dict_len].output(); printf(" ");
-			++dict_len;
-		}
-	}*/
+	WordsDivision wordsdivision;
+	wordsdivision.initDictionary(string("config/dict"));
 	
-	wchar_t dwcht[100];
-	while (in.getline(dwcht, 256)) {
-		s[dict_len++] = CharString(dwcht);
-	}
-	in.close();
-	printf("**********End Reading Dict File**********\n\n");
-	
-	printf("**********Start Building Hash Table**********\n");
-	HashTable *hTable = new HashTable(s, dict_len);
-	printf("**********End Building Hash Table**********\n\n");
-	
-
 
 	for (int i = 1; i <= 100; ++i) {
 
@@ -85,7 +59,8 @@ int main()
 		wifstream infs16("temp/temp.html");
 		//int len = 0;
 		while (infs16.read(&wch, 1))html.concat(wch);
-		HtmlParsor dom(html);
+		HtmlParsor dom;
+		dom.extractInfo(html);
 		TreeNode* p = dom.findNodeWithClass(CharString(L"z"));
 		if (p != NULL) {
 			TreeNode *p1 = p->findChildWithTag(CharString(L"a"), 2);
@@ -185,8 +160,6 @@ int main()
 		else
 			wresultfile << "NA,";
 		//p->content->output();
-		
-		//
 
 		//type
 		p = dom.findNodeWithClass(CharString(L"ts z h1"));
@@ -206,37 +179,13 @@ int main()
 
 		wifstream intemp("temp/temp.txt");
 		CharString tempstr;
+		wchar_t dwch;
 		while (intemp.read(&dwch, 1))
 			tempstr.concat(dwch);
 
-		int max_len = 10;
-		int tk = 0;
-		int current;
-		LList<CharString> lsegre;
-		while (tk < tempstr.len)
-		{
-			current = max_len;
-			while (current >= 2) {
-				CharString mstr = tempstr.substring(tk, tk + current);
-				if (hTable->exist(mstr))
-				{
-					LNode<CharString> *pN = lsegre.head->next;
-					bool existed = false;
-					while (!existed && pN) {
-						if (pN->elem.equal(mstr))
-							existed = true;
-						pN = pN->next;
-					}
-					if(!existed)
-						lsegre.add(mstr);
-					break;
-				}
-				else
-					;//printf("no");
-				--current;
-			}
-			tk += current;
-		}
+		
+		LList<CharString> lsegre = wordsdivision.divideWords(tempstr);
+		
 		LNode<CharString> *pN = lsegre.head->next;
 		if (pN == NULL)
 			wresultfile << "NA";
