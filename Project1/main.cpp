@@ -49,7 +49,6 @@ int main()
 
 		printf("Getting Html...");
 		GetHTML::getIns()->generate(domain, request);
-		//GetHTML::getIns()->generate("bbs.cehome.com","/thread-613897-1-1.html");
 		delete url;
 		delete domain;
 		delete request;
@@ -134,6 +133,16 @@ int main()
 						wresultfile << wcht;
 						tempfile << wcht;
 						j += 5;
+					}
+					else if (j + 6 < content->len && content->s[j] == '&' && content->s[j + 1] == '#' && content->s[j + 6] == ';') {
+						CharString sNumToBeDeocded = content->substring(j + 2, j + 6);
+						int num = sNumToBeDeocded.toInt();
+						wchar_t wcht = static_cast<wchar_t>(num);
+						wresultfile.imbue(locale("chs"));
+						tempfile.imbue(locale("chs"));
+						wresultfile << wcht;
+						tempfile << wcht;
+						j += 7;
 					}
 					else if (j + 5 < content->len && content->s[j] == '&' && content->s[j + 1] == 'n' && content->s[j + 2] == 'b'
 								&& content->s[j + 3] == 's' && content->s[j + 4] == 'p' && content->s[j + 5] == ';' ) {
