@@ -49,6 +49,7 @@ int main()
 
 		printf("Getting Html...");
 		GetHTML::getIns()->generate(domain, request);
+		//GetHTML::getIns()->generate("bbs.cehome.com","/thread-613897-1-1.html");
 		delete url;
 		delete domain;
 		delete request;
@@ -113,25 +114,62 @@ int main()
 			if (t) { //大部分html文件td下含有p标签，且content需要进行HtmlDecode
 				int j = 0;
 				CharString *content = t->content;
-				wresultfile.imbue(locale("chs"));
-				tempfile.imbue(locale("chs"));
-				while (j + 7 < content->len) {
-					if (content->s[j] == '&' && content->s[j + 1] == '#' && content->s[j + 7] == ';') {
+				while (j < content->len) {
+					if (j + 7 < content->len && content->s[j] == '&' && content->s[j + 1] == '#' && content->s[j + 7] == ';') {
 						CharString sNumToBeDeocded = content->substring(j + 2, j + 7);
 						int num = sNumToBeDeocded.toInt();
 						wchar_t wcht = static_cast<wchar_t>(num);
+						wresultfile.imbue(locale("chs"));
+						tempfile.imbue(locale("chs"));
 						wresultfile << wcht;
 						tempfile << wcht;
-						j += 7;
+						j += 8;
 					}
-					++j;
+					else if (j + 4 < content->len && content->s[j] == '&' && content->s[j + 1] == '#' && content->s[j + 4] == ';') {
+						CharString sNumToBeDeocded = content->substring(j + 2, j + 4);
+						int num = sNumToBeDeocded.toInt();
+						wchar_t wcht = static_cast<wchar_t>(num);
+						wresultfile.imbue(locale("chs"));
+						tempfile.imbue(locale("chs"));
+						wresultfile << wcht;
+						tempfile << wcht;
+						j += 5;
+					}
+					else if (j + 5 < content->len && content->s[j] == '&' && content->s[j + 1] == 'n' && content->s[j + 2] == 'b'
+								&& content->s[j + 3] == 's' && content->s[j + 4] == 'p' && content->s[j + 5] == ';' ) {
+						wresultfile.imbue(locale::classic());
+						tempfile.imbue(locale::classic());
+						wresultfile << " ";
+						tempfile << " ";
+						j += 6;
+					}
+					else {
+						wresultfile.imbue(locale::classic());
+						tempfile.imbue(locale::classic());
+						wresultfile << content->s[j];
+						tempfile << content->s[j];
+						++j;
+					}
 				}
 				wresultfile.imbue(locale::classic());
 			}
 			else { //少部分html文件td标签直接包含帖子内容且无需进行HtmlDecode
-				for (int j = 0; j < q->content->len; ++j)
-					if(q->content->s[j] != ' ' && q->content->s[j] != '\n')
+				int j = 0;
+				while (j < q->content->len) {
+					if (j + 5 < q->content->len && q->content->s[j] == '&' && q->content->s[j + 1] == 'n' && q->content->s[j + 2] == 'b'
+						&& q->content->s[j + 3] == 's' && q->content->s[j + 4] == 'p' && q->content->s[j + 5] == ';') {
+						wresultfile << " ";
+						tempfile << " ";
+						j += 6;
+					}
+					else if (q->content->s[j] != ' ' && q->content->s[j] != '\n') {
 						wresultfile << q->content->s[j];
+						tempfile << q->content->s[j];
+						++j;
+					}
+					else
+						++j;
+				}
 			}
 			wresultfile << "\",";
 		}
