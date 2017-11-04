@@ -1,8 +1,8 @@
 #ifndef STACK_H
 #define STACK_H
 
-#define STACK_SIZE_INIT 2000
-#define STACK_SIZE_INCREMENT 1000
+#define STACK_SIZE_INIT 10
+#define STACK_SIZE_INCREMENT 10
 
 template<class T>
 class Stack {
@@ -16,7 +16,7 @@ public:
 	~Stack();
 
 	//Interface
-	void push(T);
+	void push(T&);
 	T top();
 	void pop();
 	bool empty();
@@ -37,7 +37,7 @@ Stack<T>::~Stack()
 }
 
 template <class T>
-void Stack<T>::push(T elem)
+void Stack<T>::push(T& elem)
 {
 	if (len + 1 >= size) {
 		size += STACK_SIZE_INCREMENT;

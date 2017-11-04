@@ -39,13 +39,12 @@ void WordsDivision::initDictionary(std::string& dictname)
 
 LList<CharString> WordsDivision::divideWords(CharString& s)
 {
-	int max_len = 15;
 	int tk = 0;
 	int current;
 	LList<CharString> lsegre;
 	while (tk < s.len)
 	{
-		current = max_len;
+		current = MAXLEN;
 		while (current >= 2) {
 			CharString mstr = s.substring(tk, tk + current);
 			if (hashtable->exist(mstr))

@@ -46,7 +46,10 @@ int main()
 		for (int i = mid; i < strlen(url); ++i)
 			request[i - mid] = url[i];
 		request[strlen(url) - mid] = '\0';
+
+		printf("Getting Html...");
 		GetHTML::getIns()->generate(domain, request);
+		delete url;
 		delete domain;
 		delete request;
 		//------Get And Save HTML------
@@ -58,6 +61,7 @@ int main()
 		wifstream infs16("temp/temp.html"); 
 		while (infs16.read(&wch, 1))html.concat(wch);
 
+		printf("Parsing Html...");
 		HtmlParsor dom;
 		dom.extractInfo(html);//将html文本文件解析为树形结构
 

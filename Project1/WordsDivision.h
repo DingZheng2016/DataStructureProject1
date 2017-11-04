@@ -5,6 +5,8 @@
 #include "CharString.h"
 #include "LLink.h"
 
+#define MAXLEN 20
+
 class WordsDivision {
 private:
 	HashTable *hashtable;

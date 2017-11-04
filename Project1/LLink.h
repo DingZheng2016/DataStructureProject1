@@ -43,6 +43,8 @@ LList<T>::LList()
 template<class T>
 LList<T>::~LList()
 {
+	while (head->next)
+		remove(head->next);
 	delete head;
 }
 
