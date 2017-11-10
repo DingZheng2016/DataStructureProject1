@@ -37,7 +37,7 @@ void WordsDivision::initDictionary(std::string& dictname)
 	printf("**********End Building Hash Table**********\n\n");
 }
 
-LList<CharString> WordsDivision::divideWords(CharString& s)
+LList<CharString> WordsDivision::divideWords(CharString& s) //无统计功能分词
 {
 	int tk = 0;
 	int current;
@@ -56,6 +56,37 @@ LList<CharString> WordsDivision::divideWords(CharString& s)
 						existed = true;
 					pN = pN->next;
 				}
+				if (!existed)
+					lsegre.add(mstr);
+				break;
+			}
+			--current;
+		}
+		tk += current;
+	}
+	return lsegre;
+}
+
+LList<CharString> WordsDivision::divideWords(CharString& s, WordsStatistics& wordsstatistics) //统计功能分词
+{
+	int tk = 0;
+	int current;
+	LList<CharString> lsegre;
+	while (tk < s.len)
+	{
+		current = MAXLEN;
+		while (current >= 2) {
+			CharString mstr = s.substring(tk, tk + current);
+			if (hashtable->exist(mstr))
+			{
+				LNode<CharString> *pN = lsegre.head->next;
+				bool existed = false;
+				while (!existed && pN) {
+					if (pN->elem.equal(mstr))
+						existed = true;
+					pN = pN->next;
+				}
+				wordsstatistics.add(mstr);
 				if (!existed)
 					lsegre.add(mstr);
 				break;

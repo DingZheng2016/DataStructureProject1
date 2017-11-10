@@ -27,7 +27,7 @@ public:
 	bool equal(CharString&);
 	CharString& substring(int, int); //左闭右开
 	int toInt(); //转成数字，处理形如 &#*****; 
-
+	int indexOf(CharString&);
 
 	void output(bool space = true); //为false是自动忽略空格回车，主要用于帖子内容的输出
 	

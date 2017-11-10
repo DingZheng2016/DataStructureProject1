@@ -9,6 +9,7 @@
 #include "HtmlParsor.h"
 #include "HashTable.h"
 #include "WordsDivision.h"
+#include "WordsStatistics.h"
 
 #define FILE_SIZE 1024 * 1024
 
@@ -16,6 +17,7 @@ using namespace std;
 
 int main()
 {
+
 	CSVReader csvReader("input/url.csv");
 	char* url;
 	
@@ -27,6 +29,7 @@ int main()
 	WordsDivision wordsdivision; 
 	wordsdivision.initDictionary(string("config/dict"));//读入字典文件并构建哈希表
 	
+	WordsStatistics wordsstatistics;
 
 	for (int i = 1; i <= 100; ++i) {
 
@@ -237,7 +240,7 @@ int main()
 		while (intemp.read(&dwch, 1))
 			tempstr.concat(dwch);
 
-		LList<CharString> lsegre = wordsdivision.divideWords(tempstr); //返回分词结果链表
+		LList<CharString> lsegre = wordsdivision.divideWords(tempstr, wordsstatistics); //返回分词结果链表
 		
 		LNode<CharString> *pN = lsegre.head->next;
 		if (pN == NULL)
@@ -257,6 +260,8 @@ int main()
 		wresultfile << "\n";
 		printf("->result.csv\n");
 	}
+	wordsstatistics.sort();
+	wordsstatistics.output();
 	wresultfile.close();
 	return 0;
 }

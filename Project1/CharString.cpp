@@ -113,6 +113,34 @@ int CharString::toInt()
 	return num;
 }
 
+int CharString::indexOf(CharString &str)
+{
+	int *next = new int[str.len];
+	next[0] = -1;
+	for (int i = 1; i < str.len; ++i) {
+		int t = next[i - 1];
+		while (t != -1 && str.s[t] != str.s[next[t]])t = next[t];
+		next[i] = t + 1;
+	}
+
+	int i = 0, j = 0;
+	while (i < len && j < str.len) {
+		if (s[i] == str.s[j]) {
+			++i;
+			++j;
+			continue;
+		}
+		j = next[j];
+		while (j != -1 && str.s[j] != s[i])j = next[j];
+		++i;
+		++j;
+	}
+	if (j == str.len)
+		return i - j;
+	else
+		return -1;
+}
+
 void CharString::output(bool space)
 {
 	if (space) {
